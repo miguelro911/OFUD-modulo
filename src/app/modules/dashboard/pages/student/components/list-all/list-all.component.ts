@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { StudentService } from 'src/app/modules/dashboard/services/student/student.service';
+import { UtilService } from 'src/app/modules/dashboard/services/util/util.service';
 import { Student } from 'src/app/modules/dashboard/util/interfaces/student';
 
 const COLUMNS = [
@@ -21,21 +23,34 @@ const COLUMNS = [
 export class ListAllComponent {
 
   spinner: boolean = false;
-  studentsRetrieved: Array<Student> = [{
-    id: "1",
-    name: 'Juan',
-    lastName: 'Perez',
-    document: '123456789',
-    birthDate: new Date('1990-01-01'),
-    code: 123456,
-    personalMail: 'correotest1@gmail.com',
-    instituteMail: 'correotest2@gmail.com',
-    cellPhone: 123,
-    proyectId: '1',
-    documentTypeId: '1'
-  }];
+  studentsRetrieved: Array<Student> = [];
 
-  constructor() {
+  constructor(
+    private studentService: StudentService,
+    private utilService: UtilService
+  ) {
+    this.getAllStudents();
+  }
+
+  getAllStudents(): void {
+    this.spinner = true;
+    this.studentService.getAllStudents().subscribe(
+      {
+        next: (resp: any) => {
+          console.log(resp);
+          this.spinner = false;
+        },
+        error: (error: any) => {
+          if(error.status == 404) {
+            this.utilService.showToast(error.error.message);
+          } else {
+            this.utilService.showToast("Error obteniendo estudiantes");
+            console.error(error);
+          }
+          this.spinner = false;
+        }
+      }
+    );
   }
 
   displayed_columns: Array<string> = COLUMNS.map(column => column.name);

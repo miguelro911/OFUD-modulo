@@ -16,7 +16,7 @@
     </table>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-mini-fab color="primary" [disabled]="spinner">
+    <button mat-mini-fab color="primary" [disabled]="spinner" (click)="getAllStudents()">
       <mat-icon>refresh</mat-icon>
     </button>
   </mat-card-actions>
