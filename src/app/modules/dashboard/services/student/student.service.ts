@@ -15,11 +15,11 @@ export class StudentService {
     private http: HttpClient
   ) { }
 
-  getAllStudents() {
+  getAll() {
     return this.http.get<Student>(`${this.api_url}${StudentRoutes.BASE}${StudentRoutes.GET_ALL}`);
   }
 
-  registerStudent(student: Student) {
+  register(student: Student) {
     return this.http.post(`${this.api_url}${StudentRoutes.BASE}${StudentRoutes.REGISTER}`, student);
   }
   

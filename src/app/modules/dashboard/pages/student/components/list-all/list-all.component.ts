@@ -34,17 +34,18 @@ export class ListAllComponent {
 
   getAllStudents(): void {
     this.spinner = true;
-    this.studentService.getAllStudents().subscribe(
+    this.studentService.getAll().subscribe(
       {
         next: (resp: any) => {
-          console.log(resp);
+          this.studentsRetrieved = resp.data.studentEntityList;
           this.spinner = false;
+          this.utilService.showToast("Estudiantes consultados exitosamente");
         },
         error: (error: any) => {
           if(error.status == 404) {
             this.utilService.showToast(error.error.message);
           } else {
-            this.utilService.showToast("Error obteniendo estudiantes");
+            this.utilService.showToast("Error consultando estudiantes");
             console.error(error);
           }
           this.spinner = false;
